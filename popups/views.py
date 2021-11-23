@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PopUpForms
-from .models import PopUp
+from .models import PopUp, Theme
 # Create your views here.
 
 
@@ -52,6 +52,7 @@ def home(request):
 @login_required()
 def create_card(request):
     form = PopUpForms(request.POST or None)
+    themes = Theme.objects.all()
     if request.method == "POST":
         if form.is_valid():
             instance = form.save(commit=False)
@@ -63,6 +64,7 @@ def create_card(request):
     context = {
         "title": "add card",
         "form": form,
+        "themes": themes
     }
     return render(request, 'create_card.html', context)
 
